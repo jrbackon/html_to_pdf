@@ -47,10 +47,30 @@ def rem_line(source):
         f.truncate() # this ensures there is nothing written to the file after the for loop completes.
     return None
 
-for root, subdirectories, files in os.walk(directory): # this for loop walks through all directories in the specified folder, and runs the ablrule function on all .html files
+def remove_404(source):
+    with open(source, "r", encoding='utf8', errors='ignore') as f:
+        text = f.read()
+        f.seek(0)
+        if "404 - File or directory not found." in text:
+            return True
+        else:
+            return False
+
+def combine_files(source):
+    with open(source + "combined.html", "a", encoding='utf8', errors='ignore') as new:
+        with open(source, 'r', encoding='utf8', errors='ignore') as f:
+            text = f.read()
+            new.write(text)
+
+for root, subdirectories, files in os.walk(directory):
+    files.sort()
     for file in files:
         source = os.path.join(root, file)
         if ".html" in source:
-            rem_chunk(source)
-            rem_line(source)
+            if remove_404(source) == True:
+                os.remove(source)
+            else:
+                rem_chunk(source)
+                rem_line(source)
+                combine_files(source)
             
