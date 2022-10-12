@@ -4,7 +4,7 @@ import os
 directory = input("What is the path of the folder containing the .html files you would like to clean? ")
 
 def rem_chunk(source):
-    begin_table = "<table"
+    begin_table = """<table border="0" """
     end = "<hr"
     end_table = "</table>"
     begin_block = "<blockquote>"
@@ -34,13 +34,13 @@ def rem_line(source):
     link = "<a href="
     cpyrgt = "Babson College All Rights Reserved"
     stamp = "<!--webbot bot="
-    end_table = "</table>"
+    # end_table = "</table>"
     end_block = "</blockquote>"
     with open(source, 'r+', encoding='utf8', errors='ignore') as f:
         page = f.readlines()
         f.seek(0)
         for line in page:
-            if end in line or cap_hr in line or link in line or cpyrgt in line or stamp in line or end_table in line or end_block in line:
+            if end in line or cap_hr in line or link in line or cpyrgt in line or stamp in line or end_block in line:
                 pass
             else:
                f.write(line) 
